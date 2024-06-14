@@ -2,10 +2,6 @@ import UIKit
 import Combine
 import PlaygroundSupport
 
-var greeting = "Hello, playground"
-
-
-print(greeting)
 
 Task {
     let basicTask = Task {
