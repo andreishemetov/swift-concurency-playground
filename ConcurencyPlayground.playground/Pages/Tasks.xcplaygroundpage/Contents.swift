@@ -58,7 +58,7 @@ struct Data {
 class DataLoader{
     
     func loadDataByQueue() async -> [[String]] {
-        print("loadDataByQueue start \(Thread.current)")
+        print("loadDataByQueue start \(Thread.current) threadPriority \(Thread.threadPriority())  taskPriority \(Task.currentPriority)")
         defer {
             print("loadDataByQueue end")
         }
@@ -70,7 +70,7 @@ class DataLoader{
     }
     
     func loadDataBySeparate() async -> Data {
-        print("loadDataBySeparate start \(Thread.current)")
+        print("loadDataBySeparate start \(Thread.current) threadPriority \(Thread.threadPriority())  taskPriority \(Task.currentPriority)")
         defer {
             print("loadDataBySeparate end")
         }
@@ -83,7 +83,7 @@ class DataLoader{
     
     func loadData1() async -> [String] {
         let t = Task {
-            print("loadData1 start \(Thread.current)")
+            print("loadData1 start \(Thread.current) threadPriority \(Thread.threadPriority())  taskPriority \(Task.currentPriority)")
             defer {
                 print("loadData1 end")
             }
@@ -96,7 +96,7 @@ class DataLoader{
     
     func loadData2() async -> [String] {
         let t = Task {
-            print("loadData2 start \(Thread.current)")
+            print("loadData2 start \(Thread.current) threadPriority \(Thread.threadPriority())  taskPriority \(Task.currentPriority)")
             defer {
                 print("loadData2 end")
             }
@@ -109,7 +109,7 @@ class DataLoader{
     
     func loadData3() async -> [String] {
         let t = Task {
-            print("loadData3 start \(Thread.current)")
+            print("loadData3 start \(Thread.current) threadPriority \(Thread.threadPriority())  taskPriority \(Task.currentPriority)")
             defer {
                 print("loadData3 end")
             }
