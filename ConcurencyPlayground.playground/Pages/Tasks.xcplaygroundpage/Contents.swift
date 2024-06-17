@@ -4,19 +4,6 @@ import Foundation
 
 var greeting = "Hello, Tasks"
 
-//Task {
-//    await asyncPrint("Operation one")
-//    Task.detached(priority: .background) {
-//        // Runs asynchronously
-//        await asyncPrint("Operation two")
-//    }
-//    await asyncPrint("Operation three")
-//
-//    @Sendable func asyncPrint(_ string: String) async {
-//        print(string)
-//    }
-//}
-
 func example_1(){
     let basicTask = Task { @MainActor in
         // Executes async
@@ -58,9 +45,9 @@ struct Data {
 class DataLoader{
     
     func loadDataByQueue() async -> [[String]] {
-        print("loadDataByQueue start \(Thread.current) threadPriority \(Thread.threadPriority())  taskPriority \(Task.currentPriority)")
+        printT("loadDataByQueue start", showThread: true)
         defer {
-            print("loadDataByQueue end")
+            printT("loadDataByQueue end")
         }
         let d1 = await loadData1()
         let d2 = await loadData2()
@@ -70,9 +57,9 @@ class DataLoader{
     }
     
     func loadDataBySeparate() async -> Data {
-        print("loadDataBySeparate start \(Thread.current) threadPriority \(Thread.threadPriority())  taskPriority \(Task.currentPriority)")
+        printT("loadDataBySeparate start", showThread: true)
         defer {
-            print("loadDataBySeparate end")
+            printT("loadDataBySeparate end")
         }
         async let d1 = loadData1()
         async let d2 = loadData2()
@@ -83,9 +70,9 @@ class DataLoader{
     
     func loadData1() async -> [String] {
         let t = Task {
-            print("loadData1 start \(Thread.current) threadPriority \(Thread.threadPriority())  taskPriority \(Task.currentPriority)")
+            printT("loadData1 start", showThread: true)
             defer {
-                print("loadData1 end")
+                printT("loadData1 end")
             }
             try! await Task.sleep(nanoseconds: 1_000_000_000)
             
@@ -96,9 +83,9 @@ class DataLoader{
     
     func loadData2() async -> [String] {
         let t = Task {
-            print("loadData2 start \(Thread.current) threadPriority \(Thread.threadPriority())  taskPriority \(Task.currentPriority)")
+            printT("loadData2 start", showThread: true)
             defer {
-                print("loadData2 end")
+                printT("loadData2 end")
             }
             try! await Task.sleep(nanoseconds: 2_000_000_000)
             
@@ -109,9 +96,9 @@ class DataLoader{
     
     func loadData3() async -> [String] {
         let t = Task {
-            print("loadData3 start \(Thread.current) threadPriority \(Thread.threadPriority())  taskPriority \(Task.currentPriority)")
+            printT("loadData3 start", showThread: true)
             defer {
-                print("loadData3 end")
+                printT("loadData3 end")
             }
             try! await Task.sleep(nanoseconds: 1_000_000_000)
             
@@ -121,6 +108,11 @@ class DataLoader{
         
     }
     
+}
+
+func printT(_ text: String, showThread: Bool = false) {
+    let th = "\(Thread.current) threadPriority \(Thread.threadPriority())  taskPriority \(Task.currentPriority)"
+    print("\(text) \(showThread ? th : "")")
 }
 
 /* example_2 result
@@ -153,8 +145,25 @@ func example_2() async{
 }
 
 
-Task { @MainActor in
-    await example_2()
+//Task { @MainActor in
+//    await example_2()
+//}
+
+func example_3() async{
+    printT("Operation 1", showThread: true)
+    Task.detached(priority: .background) {
+        // Runs asynchronously
+        printT("Operation 2", showThread: true)
+    }
+    printT("Operation 3", showThread: true)
+
+//    @Sendable func asyncPrint(_ string: String) async {
+//        print(string)
+//    }
+}
+
+Task {
+    await example_3()
 }
 
 
