@@ -3,13 +3,6 @@ import Combine
 import PlaygroundSupport
 
 
-Task {
-    let basicTask = Task {
-        return "This is the result of the task"
-    }
-    print(await basicTask.value)
-}
-
 actor MyActor {
     let food = "worms"
     var numberOfEatingChickens: Int = 0

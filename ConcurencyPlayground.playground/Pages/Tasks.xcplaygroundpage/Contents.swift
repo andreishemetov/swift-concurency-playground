@@ -115,6 +115,11 @@ func printT(_ text: String, showThread: Bool = false) {
     print("\(text) \(showThread ? th : "")")
 }
 
+func asyncPrintT(_ text: String, showThread: Bool = false) async {
+    try! await Task.sleep(nanoseconds: 1_000_000_000)
+    printT(text, showThread: showThread)
+}
+
 /* example_2 result
  
  loadDataByQueue start <NSThread: 0x600001701fc0>{number = 6, name = (null)}
@@ -149,17 +154,19 @@ func example_2() async{
 //    await example_2()
 //}
 
-func example_3() async{
-    printT("Operation 1", showThread: true)
-    Task.detached(priority: .background) {
-        // Runs asynchronously
-        printT("Operation 2", showThread: true)
-    }
-    printT("Operation 3", showThread: true)
+/* Example 3 result 
+ Operation 1 <NSThread: 0x600001709440>{number = 5, name = (null)} threadPriority 0.5  taskPriority TaskPriority.high
+ Operation 2 <NSThread: 0x60000170e780>{number = 6, name = (null)} threadPriority 0.5  taskPriority TaskPriority.medium
+ Operation 3 <NSThread: 0x600001709d40>{number = 4, name = (null)} threadPriority 0.5  taskPriority TaskPriority.high
+ */
 
-//    @Sendable func asyncPrint(_ string: String) async {
-//        print(string)
-//    }
+func example_3() async{
+    await asyncPrintT("Operation 1", showThread: true)
+    Task.detached {
+        // Runs asynchronously
+        await asyncPrintT("Operation 2", showThread: true)
+    }
+    await asyncPrintT("Operation 3", showThread: true)
 }
 
 Task {
