@@ -7,6 +7,6 @@
         <page name='GCD'/>
         <page name='Tasks'/>
         <page name='TasksGroup'/>
-        <page name='ReadersAndWriters'/>
+        <page name='FileLodaer'/>
     </pages>
 </playground>

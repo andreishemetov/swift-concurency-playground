@@ -140,6 +140,21 @@ func asyncPrintT(_ text: String, showThread: Bool = false) async {
  loadData2 end
  loadDataBySeparate end
  
+ Как видно Task это не значит отдельный поток
+ Thread.sleep() vs Task.sleep()
+ Let’s just look at the old and new sleep APIs:
+
+ Thread.sleep() is the old API that blocks a thread for the given amount of seconds — it doesn’t load the CPU, the core just idles. Edit: Turns out the core doesn’t idle but DispatchQueue.concurrentPerform creates only as many threads as there are cores so even if the blocked treads don’t do anything it doesn’t create more threads to do more work during this time.
+
+ Task.sleep() is the new async API that does “sleep”. It suspends the current Task instead of blocking the thread — that means the CPU core is free to do something else for the duration of the sleep.
+
+ Or to put them side by side:
+
+ Thread.sleep()                                 Task.sleep()
+ Blocks the thread                              Suspends and lets other tasks run
+ Slow switching of threads on same core         Quickly switching via function calls to a continuation
+ Rigid, cannot be cancelled                     Can be cancelled while suspended
+ Code resumes on the same thread                Could resume on another thread, threads don’t matter 
  
  */
 
